@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head>
+	<title>APP二维码扫描</title>
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript" src="js/uploadfile.js"></script>
+	<script type="text/javascript" src="js/getfile.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<style type="text/css">
+		body {  font-family: 微软雅黑;}
+		table,tr{border:solid 1px #000;}
+	</style>
+</head>
+<body>
+	<!-- 安装包上传 -->
+	<div class="container-fluid" ng-controller="UploadController">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="row-fluid">
+					<div class="span12"></div>
+				</div>
+				<p>{{phones}}</p>
+				<form action="http://localhost/appcode/action/upload.php" method="post" enctype="multipart/form-data">
+					<fieldset>
+						 <legend>APP安装包上传与下载</legend> 
+						 <div class="span12">
+						 <label>安装包上传</label>
+						 <input type="test" id="authData" name="authData" ng-model='authData'>
+						 <input type="file" name="file" id="file" accept=".apk,.ipa" class="btn btn-default btn-block" ng-model='upfile'> 
+						 </div>
+						 <div class="span12">
+						 	<button type="button" class="btn btn-large btn-primary btn-block" ng-click="uploadSubmit()">提交</button>
+						 </div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- 安装包列表查找 -->
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="tabbable" id="tabs">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#android" data-toggle="tab">Android</a>
+						</li>
+						<li>
+							<a href="#ios" data-toggle="tab">IOS</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="android">
+							<div class="container-fluid">
+								<div class="row-fluid">
+									<div class="span12">
+										<table class="table">
+											<thead>
+												<tr>
+													<th>创建日期</th>
+													<th>文件名</th>
+													<th>二维码</th>
+												</tr>
+											</thead>
+											<tbody>
+												
+												
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="ios">
+							<div class="container-fluid">
+								<div class="row-fluid">
+									<div class="span12">
+										<table class="table">
+											<thead>
+												<tr>
+													<th>创建日期</th>
+													<th>文件名</th>
+													<th>二维码</th>
+												</tr>
+											</thead>
+											<tbody style="background: aliceblue;" ng-controller="GetfileController">
+    											<tr ng-repeat="file in files">
+    												
+    											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
