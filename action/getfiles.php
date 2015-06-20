@@ -1,5 +1,5 @@
 <?php
-	$serverip="192.168.40.252";
+	$serverip="//192.168.1.105";
 	// $dir=$serverip.'\\app2code\\downloadApp';
 	// $dir='D:\\wamp\\www\\appcode\\downloadApp';
 	$dir='/Users/jason-geng/Sites/web/angularPro/downloadApp';

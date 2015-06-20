@@ -8,7 +8,7 @@
 			$base=new base();
 			// $postdata = file_get_contents("php://input");
 			// $formData = json_decode($postdata);
-			$serverip="192.168.40.252";
+			$serverip="192.168.1.105";
 			// var_dump($_FILES['file']);die;
 			if ($_FILES["file"]["error"] > 0)
 			{
@@ -47,12 +47,16 @@
 				copy($_FILES["file"]["tmp_name"],$fileName);
 
 				include('../extensions/phpqrcode.php');
-				$data='http://'.$serverip.'\\angularPro\\downloadApp\\'.$name.'.'.$type;
-				// echo($data);die;
-				$pngname='http://'.$serverip.'\\angularPro\\downloadApp\\'.$name.'.png';
-				// echo($pngname);die;	
-				QRcode::png($data,$pngname,4,4,true);
-				header('location: http://'.$serverip.'\\angularPro\\index.html');
+				$data='http://'.$serverip.'/angularPro/downloadApp/'.$name.'.'.$type;
+				$pngname='/Users/jason-geng/Sites/web/angularPro/downloadApp/'.$name.'.png';
+				// $pngname='http://'.$serverip.'/angularPro/downloadApp/'.$name.'.png';
+				// echo($data);
+				// echo("<br>");
+				// echo($pngname);
+				// echo("<br>");
+				QRcode::png($data,$pngname);
+				// var_dump($res);die;
+				header('location: http://'.$serverip.'/angularPro/index.html');
 			}
 		}
 	}
@@ -63,9 +67,9 @@
 	class base
 	{
 		public function error($msg="操作失败！"){
-			$serverip="192.168.40.252";
+			$serverip="192.168.1.105";
 			$error=$msg;
-	    	header('location: http://'.$serverip.'\\angularPro\\index.html');
+	    	header('location: http://'.$serverip.'/angularPro/index.html');
 		}
 	}
 	
