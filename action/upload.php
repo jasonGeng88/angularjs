@@ -5,9 +5,9 @@
 	class uploadFile extends base
 	{
 		public function index(){
-			$postdata = file_get_contents("php://input");
-			echo($postdata);die;
-			$formData = json_decode($postdata);
+			$base=new base();
+			// $postdata = file_get_contents("php://input");
+			// $formData = json_decode($postdata);
 			$serverip="192.168.40.252";
 			// var_dump($_FILES['file']);die;
 			if ($_FILES["file"]["error"] > 0)
@@ -20,9 +20,11 @@
 				//文件类型
 				$type=substr(strrchr($_FILES["file"]["name"], '.'), 1);
 				$type=strtolower($type);
-				if ($type!='apk'||$type!='ipa') {
-					$base->error('上传类型错误！');
+				if ($type!='apk'&& $type!='ipa') {
+					echo('上传类型错误！');
 				}
+				// echo($type);die;
+
 				//文件大小
 				$size=$_FILES["file"]["size"] / 1024;
 				if ($size>2*1024) {
@@ -31,7 +33,7 @@
 				//服务器文件名
 				$len=strlen($_FILES["file"]["name"])-strlen($type)-1;
 				//http
-				$dir='downloadApp';
+				$dir='../downloadApp';
 				if ($type=='apk') {
 					$name=substr($_FILES["file"]["name"], 0,$len).time().'android';
 				} else if ($type=='ipa') {
@@ -41,14 +43,16 @@
 				if (!file_exists($dir)) {
 					mkdir($dir);
 				}
+				// echo($fileName);die;
 				copy($_FILES["file"]["tmp_name"],$fileName);
 
-				include('extensions\\phpqrcode.php');
-				$data='http://'.$serverip.'\\app2code\\'.$fileName;
+				include('../extensions/phpqrcode.php');
+				$data='http://'.$serverip.'\\angularPro\\downloadApp\\'.$name.'.'.$type;
 				// echo($data);die;
-				$pngname=$dir.'\\'.$name.'.png';
-				QRcode::png($data,$pngname);
-				header('location: http://'.$serverip.'\\app2code\\index.php');
+				$pngname='http://'.$serverip.'\\angularPro\\downloadApp\\'.$name.'.png';
+				// echo($pngname);die;	
+				QRcode::png($data,$pngname,4,4,true);
+				header('location: http://'.$serverip.'\\angularPro\\index.html');
 			}
 		}
 	}
@@ -61,7 +65,7 @@
 		public function error($msg="操作失败！"){
 			$serverip="192.168.40.252";
 			$error=$msg;
-	    	header('location: http://'.$serverip.'\\appcode\\index.html');
+	    	header('location: http://'.$serverip.'\\angularPro\\index.html');
 		}
 	}
 	

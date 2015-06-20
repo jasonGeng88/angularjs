@@ -1,41 +1,47 @@
 <?php
 	$serverip="192.168.40.252";
 	// $dir=$serverip.'\\app2code\\downloadApp';
-	$dir='D:\\wamp\\www\\appcode\\downloadApp';
-	$fileArr=array();
+	// $dir='D:\\wamp\\www\\appcode\\downloadApp';
+	$dir='/Users/jason-geng/Sites/web/angularPro/downloadApp';
+	$fileAndroid=array();
+	$fileIos=array();
 	if (is_dir($dir)) {
 		$dirHandle=opendir($dir);
 		$i=0;
 		$curVersion="";
 		$cur=0;
-		echo(222);die;
 		while (false !== ($fileName= readdir($dirHandle))) {
 			$subFile = $dir . DIRECTORY_SEPARATOR . $fileName; 
-			if (is_file($subFile)) {
+			//去除linux隐藏文件
+			$rule="/^[.][\s\S]*/";
+			$match=preg_match($rule, $fileName);
+
+			if (is_file($subFile) && $match==0) {
 				$fileNameAll=substr($subFile, strrpos($subFile, DIRECTORY_SEPARATOR)+1);
 				$suffix=substr($fileNameAll,strrpos($fileNameAll, '.'));
 				if ($suffix=='.apk') {
-					$fileArr['android'][$i]['name']=substr($fileNameAll,0,strlen($fileNameAll)-strlen($suffix));
-					$fileArr['android'][$i]['suffix']=substr($fileNameAll,-strlen($suffix));
+					$fileAndroid[$i]['name']=substr($fileNameAll,0,strlen($fileNameAll)-strlen($suffix));
+					$fileAndroid[$i]['suffix']=substr($fileNameAll,-strlen($suffix));
+					// echo($fileAndroid[$i]['name']);die;
 					$len=strlen($suffix)+10;
-					$filetime=substr($fileArr['android'][$i]['name'], -10);
+					$filetime=substr($fileAndroid[$i]['name'], -17,10);
 
-					$fileArr['android'][$i]['date']=date('Y-m-d H:i:s',$filetime);
-					$fileArr['android'][$i]['code']=$fileArr['android'][$i]['name'].'.png';
-					$fileArr['android'][$i]['type']='安卓';
+					$fileAndroid[$i]['date']=date('Y-m-d H:i:s',$filetime);
+					$fileAndroid[$i]['code']=$fileAndroid[$i]['name'].'.png';
+					$fileAndroid[$i]['type']='安卓';
 					// if ($filetime>$cur) {
 					// 	$cur=$filetime;
 					// 	$curVersion=$fileArr['android'][$i]['name'];
 					// }
 					$i++;
 				} else if ($suffix=='.ipa') {
-					$fileArr['ios'][$i]['name']=substr($fileNameAll,0,strlen($fileNameAll)-strlen($suffix));
-					$fileArr['ios'][$i]['suffix']=substr($fileNameAll,-strlen($suffix));
+					$fileIos[$i]['name']=substr($fileNameAll,0,strlen($fileNameAll)-strlen($suffix));
+					$fileIos[$i]['suffix']=substr($fileNameAll,-strlen($suffix));
 					$len=strlen($suffix)+10;
-					$filetime=substr($fileArr['ios'][$i]['name'], -10);
-					$fileArr['ios'][$i]['date']=date('Y-m-d H:i:s',$filetime);
-					$fileArr['ios'][$i]['code']=$fileArr['ios'][$i]['name'].'.png';
-					$fileArr['ios'][$i]['type']='安卓';
+					$filetime=substr($fileIos[$i]['name'], -13,10);
+					$fileIos[$i]['date']=date('Y-m-d H:i:s',$filetime);
+					$fileIos[$i]['code']=$fileIos[$i]['name'].'.png';
+					$fileIos[$i]['type']='IOS';
 					// if ($filetime>$cur) {
 					// 	$cur=$filetime;
 					// 	$curVersion=$fileArr[$i]['name'];
@@ -47,25 +53,33 @@
 		}
 		closedir($dirHandle);
 	}
-	$dateOrder=array();
-	if (array_key_exists('android', $fileArr)) {
-		foreach ($fileArr['android'] as $key => $value) {
-			$dateOrder[$key]=$value['date'];
-		}
-		array_multisort($dateOrder,SORT_DESC,$fileArr['android']);
-	}
-	// var_dump($fileArr);die;
-	if (array_key_exists('ios ', $fileArr) ) {
+	if (!empty($fileAndroid)) {
 		$dateOrder=array();
-		foreach ($fileArr['ios'] as $key => $value) {
+		foreach ($fileAndroid as $key => $value) {
 			$dateOrder[$key]=$value['date'];
 		}
-		array_multisort($dateOrder,SORT_DESC,$fileArr['ios']);
+		array_multisort($dateOrder,SORT_DESC,$fileAndroid);
 	}
+	if (!empty($fileIos)) {
+		$dateOrder=array();
+		foreach ($fileIos as $key => $value) {
+			$dateOrder[$key]=$value['date'];
+		}
+		array_multisort($dateOrder,SORT_DESC,$fileIos);
+	}
+	$fileArr=array(
+			"android"=>$fileAndroid,
+			"ios"=>$fileIos
+		);
+	$res=json_encode($fileArr);
+	echo($res);
+
+
+
 	
+
 	
-	
-	return $fileArr;
+	// return $fileArr;
 	// $html="";
 	// if (empty($fileArr) || count($fileArr)==0) {
 	// 	$html='<p>没有任何安装包！</p>';

@@ -25,17 +25,16 @@
 				<div class="row-fluid">
 					<div class="span12"></div>
 				</div>
-				<p>{{phones}}</p>
-				<form action="http://localhost/appcode/action/upload.php" method="post" enctype="multipart/form-data">
+				<form action="http://localhost/angularPro/action/index.php" method="post" enctype="multipart/form-data">
 					<fieldset>
 						 <legend>APP安装包上传与下载</legend> 
 						 <div class="span12">
 						 <label>安装包上传</label>
-						 <input type="test" id="authData" name="authData" ng-model='authData'>
-						 <input type="file" name="file" id="file" accept=".apk,.ipa" class="btn btn-default btn-block" ng-model='upfile'> 
+						 <!-- <input type="test" id="authData" name="authData" ng-model='authData'> -->
+						 <input type="file" name="file" id="file" accept=".apk,.ipa" class="btn btn-default btn-block"> 
 						 </div>
 						 <div class="span12">
-						 	<button type="button" class="btn btn-large btn-primary btn-block" ng-click="uploadSubmit()">提交</button>
+						 	<button type="submit" class="btn btn-large btn-primary btn-block">提交</button>
 						 </div>
 					</fieldset>
 				</form>
@@ -43,7 +42,7 @@
 		</div>
 	</div>
 	<!-- 安装包列表查找 -->
-	<div class="container-fluid">
+	<div class="container-fluid" ng-controller="GetfileController">
 		<div class="row-fluid">
 			<div class="span12">
 				<div class="tabbable" id="tabs">
@@ -69,8 +68,13 @@
 												</tr>
 											</thead>
 											<tbody>
-												
-												
+												<tr ng-repeat="a in android">
+    												<td>{{a.date}}</td>
+    												<td>{{a.name}}{{a.suffix}}</td>
+    												<td>
+    													<img src="downloadApp/{{a.code}}">
+    												</td>
+    											</tr>
 											</tbody>
 										</table>
 									</div>
@@ -86,12 +90,17 @@
 												<tr>
 													<th>创建日期</th>
 													<th>文件名</th>
+													<!-- <th>类型</th> -->
 													<th>二维码</th>
 												</tr>
 											</thead>
-											<tbody style="background: aliceblue;" ng-controller="GetfileController">
-    											<tr ng-repeat="file in files">
-    												
+											<tbody>
+    											<tr ng-repeat="i in ios">
+    												<td>{{i.date}}</td>
+    												<td>{{i.name}}{{i.suffix}}</td>
+    												<td>
+    													<img src="downloadApp/{{i.code}}">
+    												</td>
     											</tr>
 											</tbody>
 										</table>
